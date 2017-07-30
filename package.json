@@ -1,0 +1,21 @@
+{
+  "name": "redataloader",
+  "version": "0.1.0",
+  "files": [
+    "README.md",
+    "src/dataLoader.re",
+    "bsconfig.json"
+  ],
+  "scripts": {
+    "clean": "bsb -clean-world",
+    "build": "bsb -make-world",
+    "watch": "bsb -make-world -w"
+  },
+  "keywords": [
+    "BuckleScript"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "bs-platform": "1.7.5"
+  }
+}
