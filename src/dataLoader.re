@@ -1,12 +1,12 @@
-module type Spec = {type t; let name: string; let get: string => Js.Promise.t t;};
+module type Spec = {type t; let name: string; let get: context::'a? => string => Js.Promise.t t;};
 
 module Make (T: Spec) => {
   module Loader = Map.Make String;
   let loader = ref Loader.empty;
-  let load key =>
+  let load ::context=? key =>
     try (!loader |> Loader.find key) {
     | _ =>
-      let promise = T.get key;
+      let promise = T.get ::?context key;
       loader := !loader |> Loader.add key promise;
       promise
     };

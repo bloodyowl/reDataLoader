@@ -8,7 +8,7 @@
 module MyLoaderSpec = {
   type t = int;
   let name = "MyLoader";
-  let get key => Js.Promise.resolve (int_of_string key);
+  let get context::_=? key => Js.Promise.resolve (int_of_string key);
 };
 
 module MyLoader = DataLoader.Make MyLoaderSpec;

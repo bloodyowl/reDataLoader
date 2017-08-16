@@ -1,7 +1,7 @@
 module TestLoaderSpec = {
   type t = int;
   let name = "Test";
-  let get key => Js.Promise.resolve (int_of_string key);
+  let get context::_=? key => Js.Promise.resolve (int_of_string key);
 };
 
 module TestLoader = DataLoader.Make TestLoaderSpec;
@@ -23,7 +23,7 @@ module TestCallsLoaderSpec = {
   type t = int;
   let name = "Test";
   let calls = ref 0;
-  let get key => {
+  let get context::_=? key => {
     calls := !calls + 1;
     Js.Promise.resolve (int_of_string key)
   };
