@@ -1,7 +1,8 @@
 module TestLoaderSpec = {
   type t = int;
+  type context = string;
   let name = "Test";
-  let get context::_=? key => Js.Promise.resolve (int_of_string key);
+  let get context::_context key => Js.Promise.resolve (int_of_string key);
 };
 
 module TestLoader = DataLoader.Make TestLoaderSpec;
@@ -21,9 +22,10 @@ let rec sequence listOfPromises =>
 
 module TestCallsLoaderSpec = {
   type t = int;
+  type context = string;
   let name = "Test";
   let calls = ref 0;
-  let get context::_=? key => {
+  let get context::_context key => {
     calls := !calls + 1;
     Js.Promise.resolve (int_of_string key)
   };
@@ -37,7 +39,7 @@ sequence [
       "shouldLoad"
       (
         fun () =>
-          TestLoader.load "13" |>
+          TestLoader.load context::"A" "13" |>
           Js.Promise.then_ (
             fun result => {
               expect (result == 13);
@@ -52,7 +54,7 @@ sequence [
         fun () =>
           sequence [
             fun () =>
-              TestCallsLoader.load "13" |>
+              TestCallsLoader.load context::"A" "13" |>
               Js.Promise.then_ (
                 fun result => {
                   expect (result == 13);
@@ -60,7 +62,7 @@ sequence [
                 }
               ),
             fun () =>
-              TestCallsLoader.load "13" |>
+              TestCallsLoader.load context::"A" "13" |>
               Js.Promise.then_ (
                 fun result => {
                   expect (result == 13);
